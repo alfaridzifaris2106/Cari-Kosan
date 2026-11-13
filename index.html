@@ -16,6 +16,8 @@
     .tab-active { background-color: #0f766e; color: #ffffff; }
     .tab-inactive { color: #475569; }
     .tab-inactive:hover { background-color: #f1f5f9; color: #0f172a; }
+    .mdl-tab-active { border-bottom: 2px solid #0f766e; color: #0f766e; font-weight: 700; }
+    .mdl-tab-inactive { color: #64748b; font-weight: 500; }
     .leaflet-container { z-index: 10; font-family: 'Inter', sans-serif; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
@@ -65,8 +67,8 @@
         <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm">
           <div class="flex items-center justify-between mb-3">
             <div>
-              <h2 class="text-sm sm:text-base font-bold text-slate-900">Distribusi Kosan per Kode Wilayah</h2>
-              <p class="text-xs text-slate-500">Jumlah unit terdata &amp; harga minimum terendah per area</p>
+              <h2 class="text-sm sm:text-base font-bold text-slate-900">Distribusi Kosan per Wilayah</h2>
+              <p class="text-xs text-slate-500">Jumlah unit terdata &amp; sebaran area pencarian</p>
             </div>
           </div>
           <div class="relative h-72">
@@ -120,7 +122,7 @@
             <input type="text" id="filterSearch" placeholder="Contoh: Cikini, MRT, Palmerah, AC..." class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-600" />
           </div>
           <div>
-            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Kode Lokasi</label>
+            <label class="block text-[11px] font-semibold text-slate-500 mb-1">Wilayah / Kecamatan</label>
             <select id="filterKode" class="w-full px-3 py-2 text-sm border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-teal-600"></select>
           </div>
           <div>
@@ -158,15 +160,6 @@
 
         <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
           <div class="flex flex-wrap items-center gap-2">
-            <select id="filterInputVer" class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg bg-white">
-              <option value="all">Semua Versi (Ai-1 s/d Ai-5)</option>
-              <option value="Ai-1">Ai-1 (8 Kecamatan)</option>
-              <option value="Ai-2">Ai-2 (Kluster Peta)</option>
-              <option value="Ai-3">Ai-3 (Transit Menteng/TA)</option>
-              <option value="Ai-4">Ai-4 (Bujet Palmerah/Slipi)</option>
-              <option value="Ai-5">Ai-5 (50 Kosan Bujet)</option>
-              <option value="Custom">Input Manual Baru</option>
-            </select>
             <select id="sortOrder" class="px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg bg-white font-medium">
               <option value="id_asc">Urutan: Asli (1 - 122)</option>
               <option value="price_asc">Harga: Termurah</option>
@@ -262,12 +255,11 @@
 
     <!-- VIEW 5: EKSPOR, SINKRONISASI & LOG PERUBAHAN -->
     <section id="view-sync" class="view-section hidden space-y-5">
-      <!-- Live 2-Way Google Sheets Sync -->
       <div class="bg-white rounded-2xl border border-teal-200 p-5 shadow-sm space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
             <h2 class="text-base font-bold text-slate-900">🔄 Integrasi Otomatis dengan Google Sheets</h2>
-            <p class="text-xs text-slate-500">Hubungkan aplikasi web ini dengan spreadsheet Anda agar perubahan harga, fasilitas, dan waktu edit saling sinkron otomatis.</p>
+            <p class="text-xs text-slate-500">Hubungkan aplikasi web ini dengan spreadsheet Anda agar perubahan harga, fasilitas, status, dan waktu edit saling sinkron otomatis.</p>
           </div>
           <button type="button" id="btnOpenScriptModal" class="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-xl text-xs font-bold transition">Lihat &amp; Salin Kode Apps Script</button>
         </div>
@@ -289,7 +281,6 @@
         </div>
       </div>
 
-      <!-- Export & Backup Row -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
           <h2 class="text-base font-bold text-slate-900">Ekspor Data ke Spreadsheet / Excel</h2>
@@ -303,7 +294,7 @@
 
         <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
           <h2 class="text-base font-bold text-slate-900">Cadangkan &amp; Pulihkan Lengkap dengan Foto (JSON)</h2>
-          <p class="text-xs text-slate-600 leading-relaxed">Simpan file cadangan progres beserta foto-foto survei dan log perubahan agar dapat dipindahkan antar HP dan Laptop.</p>
+          <p class="text-xs text-slate-600 leading-relaxed">Foto disimpan di penyimpanan IndexedDB berkapasitas besar. Simpan file cadangan JSON untuk memindahkan data &amp; foto antar HP dan Laptop.</p>
           <div class="flex flex-wrap items-center gap-2.5">
             <button type="button" id="btnExportJson" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm transition">Simpan Backup JSON</button>
             <label class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-semibold rounded-xl cursor-pointer transition">
@@ -315,7 +306,6 @@
         </div>
       </div>
 
-      <!-- Change Log Audit Table -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
           <div>
@@ -341,7 +331,6 @@
         </div>
       </div>
 
-      <!-- Ecosystem Links -->
       <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3">
         <h2 class="text-base font-bold text-slate-900">Tautan Ekosistem Terintegrasi</h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
@@ -382,146 +371,166 @@
     </button>
   </nav>
 
-  <!-- Full Editable Detail & Photo Gallery Modal -->
+  <!-- Tabbed Detail / Edit & Photo Gallery Modal (Compact for Mobile) -->
   <div id="detailModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 p-5 space-y-4">
-      <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
-        <div>
+    <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 border-b border-slate-100 flex items-start justify-between gap-3 shrink-0">
+        <div class="min-w-0">
           <div class="flex items-center gap-2 mb-1 flex-wrap">
             <span id="mdlKode" class="px-2 py-0.5 text-[11px] font-bold rounded-md bg-teal-50 text-teal-800 border border-teal-200"></span>
             <span id="mdlInput" class="px-2 py-0.5 text-[11px] font-semibold rounded-md bg-slate-100 text-slate-700"></span>
             <span id="mdlUpdated" class="text-[10px] text-slate-400 font-medium"></span>
           </div>
-          <h3 id="mdlTitle" class="text-lg font-bold text-slate-900"></h3>
-          <p id="mdlAlamat" class="text-xs text-slate-500 mt-0.5"></p>
+          <h3 id="mdlTitle" class="text-base sm:text-lg font-bold text-slate-900 truncate"></h3>
+          <p id="mdlAlamat" class="text-xs text-slate-500 mt-0.5 truncate"></p>
         </div>
-        <button type="button" id="btnCloseDetailModal" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 text-lg leading-none">&times;</button>
+        <button type="button" id="btnCloseDetailModal" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 text-lg leading-none shrink-0">&times;</button>
       </div>
 
-      <div id="mdlStepper" class="bg-slate-50 border border-slate-200 rounded-xl p-3"></div>
+      <!-- Modal Sub-Tabs -->
+      <div class="flex border-b border-slate-200 bg-slate-50/70 px-4 gap-4 text-xs shrink-0">
+        <button type="button" data-mdl-tab="status" class="mdl-subtab mdl-tab-active py-2.5 transition">Status &amp; Survei</button>
+        <button type="button" data-mdl-tab="photos" class="mdl-subtab mdl-tab-inactive py-2.5 transition">📷 Foto (<span id="mdlPhotoTabCount">0</span>)</button>
+        <button type="button" data-mdl-tab="edit" class="mdl-subtab mdl-tab-inactive py-2.5 transition">✏️ Edit Harga &amp; Fasilitas</button>
+      </div>
 
-      <!-- Photo Upload & Gallery Section -->
-      <div class="bg-teal-50/40 border border-teal-200/80 rounded-xl p-3.5 space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <h4 class="text-xs font-bold text-slate-900">📷 Galeri Foto Survei (<span id="mdlPhotoCount">0</span> Foto)</h4>
-            <p class="text-[11px] text-slate-500">Unggah foto kamar, kamar mandi, atau akses jalan</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <select id="mdlPhotoLabel" class="px-2 py-1.5 text-[11px] border border-slate-300 rounded-lg bg-white font-medium">
-              <option value="Kamar">Label: Kamar</option>
-              <option value="Kamar Mandi">Label: Kamar Mandi</option>
-              <option value="Parkiran / Luar">Label: Parkiran / Luar</option>
-              <option value="Dapur / Umum">Label: Dapur / Umum</option>
-              <option value="Akses Jalan">Label: Akses Jalan</option>
-            </select>
-            <label class="px-3 py-1.5 bg-teal-700 hover:bg-teal-800 text-white text-[11px] font-semibold rounded-lg cursor-pointer shadow-sm transition">
-              + Upload Foto
-              <input type="file" id="mdlPhotoInput" accept="image/*" multiple class="hidden" />
-            </label>
+      <!-- Modal Body -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+        <!-- Sub-Tab 1: Status & Survei -->
+        <div id="mdlPane-status" class="mdl-pane space-y-4">
+          <div id="mdlStepper" class="bg-slate-50 border border-slate-200 rounded-xl p-3"></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Status Ketersediaan</label>
+              <select id="mdlStatus" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white">
+                <option value="Belum Konfirmasi">Belum Konfirmasi</option>
+                <option value="Tersedia">Tersedia</option>
+                <option value="Waiting List">Waiting List</option>
+                <option value="Penuh (Full)">Penuh (Full)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Jadwal Survei</label>
+              <input type="date" id="mdlJadwal" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Skor Survei Pribadi (1-5)</label>
+              <select id="mdlSkor" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white">
+                <option value="0">Belum Dinilai</option>
+                <option value="1">1 - Kurang Cocok</option>
+                <option value="2">2 - Cukup</option>
+                <option value="3">3 - Lumayan</option>
+                <option value="4">4 - Bagus</option>
+                <option value="5">5 - Sangat Rekomendasi</option>
+              </select>
+            </div>
+            <div class="flex items-end gap-3 pb-1">
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium"><input type="checkbox" id="mdlChkKontak" class="w-4 h-4 accent-teal-700" /> Kontak</label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium"><input type="checkbox" id="mdlChkSurvei" class="w-4 h-4 accent-teal-700" /> Survei</label>
+              <label class="flex items-center gap-1.5 cursor-pointer font-medium"><input type="checkbox" id="mdlChkTempati" class="w-4 h-4 accent-teal-700" /> Tempati</label>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block font-semibold text-slate-600 mb-1">Catatan &amp; Hasil Survei Pribadi</label>
+              <textarea id="mdlCatatan" rows="3" placeholder="Tulis hasil chat WA, info rekening resmi, kondisi sinyal/air..." class="w-full px-3 py-2 border border-slate-300 rounded-xl"></textarea>
+            </div>
           </div>
         </div>
-        <div id="mdlPhotoDropZone" class="border-2 border-dashed border-teal-300 rounded-xl p-3 text-center bg-white/80">
-          <div id="mdlPhotoGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5"></div>
+
+        <!-- Sub-Tab 2: Foto Survei -->
+        <div id="mdlPane-photos" class="mdl-pane hidden space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">📷 Galeri Foto Survei (<span id="mdlPhotoCount">0</span> Foto)</h4>
+              <p class="text-[11px] text-slate-500">Tersimpan aman di browser (kapasitas besar IndexedDB)</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <select id="mdlPhotoLabel" class="px-2 py-1.5 text-[11px] border border-slate-300 rounded-lg bg-white font-medium">
+                <option value="Kamar">Label: Kamar</option>
+                <option value="Kamar Mandi">Label: Kamar Mandi</option>
+                <option value="Parkiran / Luar">Label: Parkiran / Luar</option>
+                <option value="Dapur / Umum">Label: Dapur / Umum</option>
+                <option value="Akses Jalan">Label: Akses Jalan</option>
+              </select>
+              <label class="px-3 py-1.5 bg-teal-700 hover:bg-teal-800 text-white text-[11px] font-semibold rounded-lg cursor-pointer shadow-sm transition">
+                + Upload Foto
+                <input type="file" id="mdlPhotoInput" accept="image/*" multiple class="hidden" />
+              </label>
+            </div>
+          </div>
+          <div id="mdlPhotoDropZone" class="border-2 border-dashed border-teal-300 rounded-xl p-3 text-center bg-teal-50/30">
+            <div id="mdlPhotoGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5"></div>
+          </div>
+        </div>
+
+        <!-- Sub-Tab 3: Edit Harga & Fasilitas -->
+        <div id="mdlPane-edit" class="mdl-pane hidden space-y-3 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Nama Kos</label>
+              <input type="text" id="mdlEditNama" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white font-semibold" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Tipe Penghuni</label>
+              <input type="text" id="mdlEditTipe" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Harga Min (Rp)</label>
+              <input type="number" id="mdlEditHargaMin" step="50000" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white font-bold text-emerald-700" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Harga Max (Rp)</label>
+              <input type="number" id="mdlEditHargaMax" step="50000" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white font-bold text-emerald-700" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block font-semibold text-slate-600 mb-1">Alamat Lengkap</label>
+              <input type="text" id="mdlEditAlamat" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block font-semibold text-slate-600 mb-1">Fasilitas Tersedia (Koreksi jika ada yang keliru)</label>
+              <textarea id="mdlEditFasilitas" rows="2" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white"></textarea>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Akses &amp; Jam Malam</label>
+              <input type="text" id="mdlEditAkses" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Transportasi Umum</label>
+              <input type="text" id="mdlEditTransportasi" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block font-semibold text-slate-600 mb-1">Aturan Khusus &amp; Biaya Tambahan</label>
+              <input type="text" id="mdlEditAturan" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Nomor HP / WA (cth: 0812...)</label>
+              <input type="text" id="mdlEditWa" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-600 mb-1">Link Google Maps</label>
+              <input type="url" id="mdlEditMaps" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+            </div>
+            <div class="sm:col-span-2 flex flex-wrap items-center gap-2 pt-1">
+              <div class="flex-1 min-w-[110px]">
+                <label class="block font-semibold text-slate-600 mb-1">Latitude</label>
+                <input type="number" step="any" id="mdlEditLat" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+              </div>
+              <div class="flex-1 min-w-[110px]">
+                <label class="block font-semibold text-slate-600 mb-1">Longitude</label>
+                <input type="number" step="any" id="mdlEditLon" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
+              </div>
+              <button type="button" id="btnMdlGps" class="mt-4 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg font-semibold">📍 Pakai GPS Saya</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Editable Details Form (Fix Wrong Price, Facilities, Address, etc.) -->
-      <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-3 text-xs">
-        <div class="flex items-center justify-between">
-          <h4 class="font-bold text-slate-900">✏️ Edit Detail &amp; Koreksi Data Kosan</h4>
-          <span class="text-[10px] text-slate-500">Otomatis tercatat di Log Perubahan</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Nama Kos</label>
-            <input type="text" id="mdlEditNama" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white font-semibold" />
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Tipe Penghuni</label>
-            <input type="text" id="mdlEditTipe" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Harga Min (Rp)</label>
-            <input type="number" id="mdlEditHargaMin" step="50000" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white font-bold text-emerald-700" />
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Harga Max (Rp)</label>
-            <input type="number" id="mdlEditHargaMax" step="50000" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white font-bold text-emerald-700" />
-          </div>
-          <div class="sm:col-span-2">
-            <label class="block font-semibold text-slate-600 mb-1">Alamat Lengkap</label>
-            <input type="text" id="mdlEditAlamat" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
-          </div>
-          <div class="sm:col-span-2">
-            <label class="block font-semibold text-slate-600 mb-1">Fasilitas Tersedia (Koreksi jika ada yang keliru)</label>
-            <textarea id="mdlEditFasilitas" rows="2" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white"></textarea>
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Akses &amp; Jam Malam</label>
-            <input type="text" id="mdlEditAkses" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Transportasi Umum</label>
-            <input type="text" id="mdlEditTransportasi" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
-          </div>
-          <div class="sm:col-span-2">
-            <label class="block font-semibold text-slate-600 mb-1">Aturan Khusus &amp; Biaya Tambahan</label>
-            <input type="text" id="mdlEditAturan" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Nomor HP / WA (cth: 0812...)</label>
-            <input type="text" id="mdlEditWa" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-600 mb-1">Link Google Maps</label>
-            <input type="url" id="mdlEditMaps" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg bg-white" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Survey Progress Form -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-        <div>
-          <label class="block font-semibold text-slate-600 mb-1">Status Ketersediaan</label>
-          <select id="mdlStatus" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white">
-            <option value="Belum Konfirmasi">Belum Konfirmasi</option>
-            <option value="Tersedia">Tersedia</option>
-            <option value="Waiting List">Waiting List</option>
-            <option value="Penuh (Full)">Penuh (Full)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-600 mb-1">Jadwal Survei</label>
-          <input type="date" id="mdlJadwal" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white" />
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-600 mb-1">Skor Survei Pribadi (1-5)</label>
-          <select id="mdlSkor" class="w-full px-3 py-2 border border-slate-300 rounded-xl bg-white">
-            <option value="0">Belum Dinilai</option>
-            <option value="1">1 - Kurang Cocok</option>
-            <option value="2">2 - Cukup</option>
-            <option value="3">3 - Lumayan</option>
-            <option value="4">4 - Bagus</option>
-            <option value="5">5 - Sangat Rekomendasi</option>
-          </select>
-        </div>
-        <div class="flex items-end gap-3 pb-1">
-          <label class="flex items-center gap-1.5 cursor-pointer font-medium"><input type="checkbox" id="mdlChkKontak" class="w-4 h-4 accent-teal-700" /> Kontak</label>
-          <label class="flex items-center gap-1.5 cursor-pointer font-medium"><input type="checkbox" id="mdlChkSurvei" class="w-4 h-4 accent-teal-700" /> Survei</label>
-          <label class="flex items-center gap-1.5 cursor-pointer font-medium"><input type="checkbox" id="mdlChkTempati" class="w-4 h-4 accent-teal-700" /> Tempati</label>
-        </div>
-        <div class="sm:col-span-2">
-          <label class="block font-semibold text-slate-600 mb-1">Catatan &amp; Hasil Survei Pribadi</label>
-          <textarea id="mdlCatatan" rows="3" placeholder="Tulis hasil chat WA, info rekening resmi, kondisi sinyal/air..." class="w-full px-3 py-2 border border-slate-300 rounded-xl"></textarea>
-        </div>
-      </div>
-
-      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
-        <div class="flex flex-wrap gap-2">
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-slate-100 bg-slate-50/70 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <div class="flex flex-wrap gap-1.5">
           <a id="mdlBtnWa" href="#" target="_blank" rel="noopener" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-xl">Chat WhatsApp</a>
           <a id="mdlBtnMaps" href="#" target="_blank" rel="noopener" class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl">Google Maps</a>
-          <a id="mdlBtnDrive" href="#" target="_blank" rel="noopener" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold rounded-xl">Folder Drive</a>
+          <a id="mdlBtnDrive" href="#" target="_blank" rel="noopener" class="px-3 py-2 bg-white border border-slate-300 hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded-xl">Folder Drive</a>
         </div>
         <button type="button" id="btnSaveDetailModal" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white text-xs font-semibold rounded-xl shadow-sm">Simpan Perubahan</button>
       </div>
@@ -673,6 +682,17 @@ function doPost(e) {
           <label class="block font-semibold text-slate-600 mb-1">Fasilitas &amp; Catatan</label>
           <input type="text" id="addFasilitas" placeholder="AC, KM Dalam, Wi-Fi..." class="w-full px-3 py-2 border border-slate-300 rounded-xl" />
         </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="flex-1">
+            <label class="block font-semibold text-slate-600 mb-1">Latitude</label>
+            <input type="number" step="any" id="addLat" value="-6.1880" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg" />
+          </div>
+          <div class="flex-1">
+            <label class="block font-semibold text-slate-600 mb-1">Longitude</label>
+            <input type="number" step="any" id="addLon" value="106.8220" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg" />
+          </div>
+          <button type="button" id="btnAddGps" class="mt-4 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg font-semibold">📍 Pakai GPS</button>
+        </div>
         <div class="pt-2 flex justify-end gap-2">
           <button type="button" id="btnCancelAdd" class="px-4 py-2 bg-slate-100 rounded-xl font-semibold text-slate-700">Batal</button>
           <button type="submit" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white rounded-xl font-semibold">Simpan Kosan</button>
@@ -701,6 +721,8 @@ function doPost(e) {
     const STORAGE_KEY = 'kosan_tracker_pro_v2_state';
     const LOGS_KEY = 'kosan_tracker_pro_v2_logs';
     const SYNC_CFG_KEY = 'kosan_tracker_pro_v2_sync';
+    const IDB_NAME = 'KosanPhotoDB';
+    const IDB_STORE = 'photos';
 
     const CHECKLIST_ITEMS = [
       { cat: 'Konektivitas', text: 'Sinyal seluler (4G/5G) kuat di dalam kamar' },
@@ -739,9 +761,29 @@ function doPost(e) {
       'JP-KST': 'https://drive.google.com/drive/folders/1N20B9uWT0uBcfWscNgM52K4fpHj54iPF'
     };
 
+    const AREA_LABELS = {
+      'JP-GAM': 'JP-GAM (Gambir)',
+      'MAP-CDB': 'MAP-CDB (Cideng Barat)',
+      'JP-TNA': 'JP-TNA (Tanah Abang)',
+      'MAP-BNH': 'MAP-BNH (Penjernihan Benhil)',
+      'MAP-THC': 'MAP-THC (Thamrin City)',
+      'JP-BNH': 'JP-BNH (Bendungan Hilir)',
+      'JP-MTG': 'JP-MTG (Menteng / Cikini)',
+      'MAP-SRN': 'MAP-SRN (Sarinah / Monas)',
+      'JP-SNN': 'JP-SNN (Senen)',
+      'JP-CPT': 'JP-CPT (Cempaka Putih)',
+      'JP-JBR': 'JP-JBR (Johar Baru)',
+      'JP-KMY': 'JP-KMY (Kemayoran)',
+      'JP-SWB': 'JP-SWB (Sawah Besar)',
+      'JP-PLM': 'JP-PLM (Palmerah)',
+      'JP-SLP': 'JP-SLP (Slipi)',
+      'JP-KST': 'JP-KST (KS Tubun / Petamburan)'
+    };
+
     let kosanList = [];
     let changeLogs = [];
     let syncCfg = { csvUrl: '', webhookUrl: '' };
+    let photosMap = {}; // { [id]: [ {id, dataUrl, label, addedAt} ] }
     let currentTab = 'list';
     let listViewMode = 'cards';
     let activeDetailId = null;
@@ -760,13 +802,60 @@ function doPost(e) {
       return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
     }
 
-    function loadState() {
+    function openPhotoDb() {
+      return new Promise((resolve, reject) => {
+        if (!window.indexedDB) return resolve(null);
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = e => {
+          const db = e.target.result;
+          if (!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE);
+        };
+        req.onsuccess = e => resolve(e.target.result);
+        req.onerror = () => resolve(null);
+      });
+    }
+
+    async function loadPhotosFromIdb() {
+      const db = await openPhotoDb();
+      if (!db) return;
+      return new Promise(resolve => {
+        const tx = db.transaction(IDB_STORE, 'readonly');
+        const req = tx.objectStore(IDB_STORE).get('all_photos');
+        req.onsuccess = () => {
+          if (req.result && typeof req.result === 'object') photosMap = req.result;
+          resolve();
+        };
+        req.onerror = () => resolve();
+      });
+    }
+
+    async function savePhotosToIdb() {
+      const db = await openPhotoDb();
+      if (!db) return;
+      return new Promise(resolve => {
+        const tx = db.transaction(IDB_STORE, 'readwrite');
+        tx.objectStore(IDB_STORE).put(photosMap, 'all_photos');
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => resolve();
+      });
+    }
+
+    async function loadState() {
+      await loadPhotosFromIdb();
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            kosanList = parsed.map(p => ({ ...p, photos: Array.isArray(p.photos) ? p.photos : [], lastUpdated: p.lastUpdated || '2026-11-13 17:00:00' }));
+            let migrated = false;
+            kosanList = parsed.map(p => {
+              if (Array.isArray(p.photos) && p.photos.length > 0 && !photosMap[p.id]) {
+                photosMap[p.id] = p.photos;
+                migrated = true;
+              }
+              return { ...p, photos: undefined, lastUpdated: p.lastUpdated || '2026-11-13 17:00:00' };
+            });
+            if (migrated) savePhotosToIdb();
           }
         }
         const savedLogs = localStorage.getItem(LOGS_KEY);
@@ -776,7 +865,7 @@ function doPost(e) {
       } catch (e) {}
 
       if (kosanList.length === 0) {
-        kosanList = JSON.parse(JSON.stringify(INITIAL_DATA));
+        kosanList = JSON.parse(JSON.stringify(INITIAL_DATA)).map(p => ({ ...p, photos: undefined }));
       }
       if (changeLogs.length === 0) {
         changeLogs = [{ time: '2026-11-13 17:00:00', kode: 'ALL', nama: '122 Kosan Master', source: 'Sistem', fields: 'Inisialisasi', summary: 'Database awal 122 kosan aktif' }];
@@ -785,13 +874,17 @@ function doPost(e) {
 
     function saveState() {
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(kosanList));
+        const slimList = kosanList.map(i => ({ ...i, photos: undefined }));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(slimList));
         localStorage.setItem(LOGS_KEY, JSON.stringify(changeLogs.slice(0, 200)));
         localStorage.setItem(SYNC_CFG_KEY, JSON.stringify(syncCfg));
-      } catch (e) {
-        showToast('Penyimpanan browser hampir penuh, ekspor backup JSON disarankan');
-      }
+      } catch (e) {}
+      savePhotosToIdb();
       updateHeaderCounts();
+    }
+
+    function getItemPhotos(id) {
+      return photosMap[id] || [];
     }
 
     function recordChange(item, source, fields, summary) {
@@ -804,7 +897,7 @@ function doPost(e) {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...item, photos: undefined, changedFields: fields, summary })
+            body: JSON.stringify({ ...item, changedFields: fields, summary })
           }).catch(() => {});
         } catch (err) {}
       }
@@ -812,7 +905,7 @@ function doPost(e) {
 
     function updateHeaderCounts() {
       document.getElementById('hdrTotalCount').textContent = kosanList.length;
-      const totalPhotos = kosanList.reduce((acc, i) => acc + (i.photos ? i.photos.length : 0), 0);
+      const totalPhotos = Object.values(photosMap).reduce((acc, arr) => acc + (Array.isArray(arr) ? arr.length : 0), 0);
       document.getElementById('hdrPhotoCount').textContent = totalPhotos;
     }
 
@@ -825,6 +918,12 @@ function doPost(e) {
 
     function formatRp(num) {
       return 'Rp' + Number(num || 0).toLocaleString('id-ID');
+    }
+
+    function getWaLink(item) {
+      if (!item.wa || !item.wa.startsWith('https://wa.me')) return '';
+      const msg = `Halo Bapak/Ibu, saya dapat info kosan ${item.nama} (${item.alamat}). Apakah masih ada kamar kosong untuk bulan ini dan boleh minta info harga serta jadwal survei?`;
+      return `${item.wa}?text=${encodeURIComponent(msg)}`;
     }
 
     function getPipeline(item) {
@@ -917,13 +1016,13 @@ function doPost(e) {
     async function handleFilesUpload(itemId, fileList, label) {
       const item = kosanList.find(i => i.id === itemId);
       if (!item || !fileList || fileList.length === 0) return;
-      if (!item.photos) item.photos = [];
+      if (!photosMap[itemId]) photosMap[itemId] = [];
       let added = 0;
       for (const file of Array.from(fileList)) {
         if (!file.type.startsWith('image/')) continue;
         try {
           const dataUrl = await compressImageFile(file);
-          item.photos.push({
+          photosMap[itemId].push({
             id: Date.now() + Math.floor(Math.random() * 1000),
             dataUrl,
             label: label || 'Foto Survei',
@@ -937,24 +1036,26 @@ function doPost(e) {
         saveState();
         renderList();
         if (activeDetailId === itemId) renderModalPhotos(item);
-        showToast(`${added} foto berhasil ditambahkan ke ${item.nama}`);
+        showToast(`${added} foto tersimpan aman untuk ${item.nama}`);
       }
     }
 
     function openLightbox(itemId, index) {
       const item = kosanList.find(i => i.id === itemId);
-      if (!item || !item.photos || item.photos.length === 0) return;
+      const photos = getItemPhotos(itemId);
+      if (!item || photos.length === 0) return;
       lbItemId = itemId;
-      lbIndex = Math.max(0, Math.min(index, item.photos.length - 1));
+      lbIndex = Math.max(0, Math.min(index, photos.length - 1));
       updateLightboxView();
       document.getElementById('photoLightbox').classList.remove('hidden');
     }
 
     function updateLightboxView() {
       const item = kosanList.find(i => i.id === lbItemId);
-      if (!item || !item.photos || item.photos.length === 0) return;
-      const p = item.photos[lbIndex];
-      document.getElementById('lbTitle').textContent = `${item.nama} (${lbIndex + 1}/${item.photos.length})`;
+      const photos = getItemPhotos(lbItemId);
+      if (!item || photos.length === 0) return;
+      const p = photos[lbIndex];
+      document.getElementById('lbTitle').textContent = `${item.nama} (${lbIndex + 1}/${photos.length})`;
       document.getElementById('lbSubtitle').textContent = `${p.label} • Diunggah ${p.addedAt}`;
       document.getElementById('lbImage').src = p.dataUrl;
     }
@@ -965,12 +1066,11 @@ function doPost(e) {
       const budget = document.getElementById('filterBudget').value;
       const tipe = document.getElementById('filterTipe').value;
       const pipe = document.getElementById('filterPipeline').value;
-      const ver = document.getElementById('filterInputVer').value;
       const sort = document.getElementById('sortOrder').value;
       const hasPhotos = document.getElementById('filterHasPhotos').checked;
 
       let res = kosanList.filter(item => {
-        if (hasPhotos && (!item.photos || item.photos.length === 0)) return false;
+        if (hasPhotos && getItemPhotos(item.id).length === 0) return false;
         if (q) {
           const hay = (item.nama + ' ' + item.alamat + ' ' + item.kecamatan + ' ' + item.fasilitas + ' ' + item.transportasi + ' ' + item.keterangan).toLowerCase();
           if (!hay.includes(q)) return false;
@@ -985,7 +1085,6 @@ function doPost(e) {
         const stg = getPipeline(item);
         if (pipe === 'active' && stg.startsWith('0.')) return false;
         else if (pipe !== 'all' && pipe !== 'active' && stg !== pipe) return false;
-        if (ver !== 'all' && item.kode_input !== ver) return false;
         return true;
       });
 
@@ -994,7 +1093,7 @@ function doPost(e) {
         if (sort === 'price_desc') return b.hargaMin - a.hargaMin;
         if (sort === 'updated_desc') return String(b.lastUpdated || '').localeCompare(String(a.lastUpdated || ''));
         if (sort === 'score_desc') return (b.skor || 0) - (a.skor || 0);
-        if (sort === 'photos_desc') return (b.photos?.length || 0) - (a.photos?.length || 0);
+        if (sort === 'photos_desc') return getItemPhotos(b.id).length - getItemPhotos(a.id).length;
         if (sort === 'name_asc') return a.nama.localeCompare(b.nama);
         return a.id - b.id;
       });
@@ -1005,7 +1104,7 @@ function doPost(e) {
     function populateKodeFilter() {
       const sel = document.getElementById('filterKode');
       const kodes = Array.from(new Set(kosanList.map(i => i.kode))).sort();
-      sel.innerHTML = '<option value="all">Semua Kode Wilayah</option>' + kodes.map(k => `<option value="${k}">${k}</option>`).join('');
+      sel.innerHTML = '<option value="all">Semua Wilayah</option>' + kodes.map(k => `<option value="${k}">${AREA_LABELS[k] || k}</option>`).join('');
     }
 
     function renderDashboard() {
@@ -1039,7 +1138,7 @@ function doPost(e) {
 
       const byKode = {};
       kosanList.forEach(i => {
-        if (!byKode[i.kode]) byKode[i.kode] = { kode: i.kode, area: i.kecamatan, count: 0, kontak: 0, minPrice: Infinity, sumMin: 0, driveUrl: i.driveUrl };
+        if (!byKode[i.kode]) byKode[i.kode] = { kode: i.kode, area: AREA_LABELS[i.kode] || i.kecamatan, count: 0, kontak: 0, minPrice: Infinity, sumMin: 0, driveUrl: i.driveUrl };
         const g = byKode[i.kode];
         g.count++;
         if (i.kontak) g.kontak++;
@@ -1122,10 +1221,11 @@ function doPost(e) {
       grid.innerHTML = items.map(item => {
         const stage = getPipeline(item);
         const badgeCls = getPipelineBadge(stage);
-        const photos = item.photos || [];
+        const photos = getItemPhotos(item.id);
         const pills = extractFacilityPills(item);
-        const waBtn = item.wa && item.wa.startsWith('https://wa.me')
-          ? `<a href="${item.wa}" target="_blank" rel="noopener" class="flex-1 text-center py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[11px] font-semibold transition">Chat WA</a>`
+        const waHref = getWaLink(item);
+        const waBtn = waHref
+          ? `<a href="${waHref}" target="_blank" rel="noopener" class="flex-1 text-center py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-[11px] font-semibold transition">Chat WA</a>`
           : `<span class="flex-1 text-center py-1.5 bg-slate-100 text-slate-400 rounded-xl text-[11px] font-medium">No WA</span>`;
 
         const coverHtml = photos.length > 0
@@ -1151,7 +1251,7 @@ function doPost(e) {
                <button type="button" data-quick-upload="${item.id}" class="mt-4 px-3 py-1.5 rounded-xl bg-white hover:bg-teal-50 text-teal-800 border border-teal-200 text-[11px] font-bold shadow-sm transition flex items-center gap-1.5">
                  <span>📷</span><span>+ Upload Foto Survei</span>
                </button>
-               <span class="text-[10px] text-slate-400 mt-1">${item.kecamatan} • ${item.kode_input}</span>
+               <span class="text-[10px] text-slate-400 mt-1">${item.kecamatan}</span>
              </div>`;
 
         return `
@@ -1207,7 +1307,8 @@ function doPost(e) {
       tbody.innerHTML = items.map(item => {
         const stage = getPipeline(item);
         const badgeCls = getPipelineBadge(stage);
-        const photos = item.photos || [];
+        const photos = getItemPhotos(item.id);
+        const waHref = getWaLink(item);
         return `
           <tr class="hover:bg-slate-50">
             <td class="px-3 py-2.5 space-y-1">
@@ -1221,12 +1322,12 @@ function doPost(e) {
             <td class="px-3 py-2.5">
               ${photos.length > 0 ? `<img src="${photos[0].dataUrl}" data-open-lb="${item.id}" data-lb-idx="0" class="w-12 h-9 object-cover rounded-lg cursor-pointer border border-slate-200" />` : `<button type="button" data-quick-upload="${item.id}" class="px-2 py-1 bg-teal-50 text-teal-800 rounded text-[10px] font-semibold border border-teal-200">+ Foto</button>`}
             </td>
-            <td class="px-3 py-2.5 font-bold text-teal-800">${item.kode}<div class="text-[10px] font-normal text-slate-500">${item.kode_input}</div></td>
+            <td class="px-3 py-2.5 font-bold text-teal-800">${item.kode}</td>
             <td class="px-3 py-2.5"><div class="font-bold text-slate-900">${item.nama}</div><div class="text-[11px] text-slate-500">${item.alamat}</div></td>
             <td class="px-3 py-2.5 font-bold text-emerald-700 whitespace-nowrap">${formatRp(item.hargaMin)}</td>
             <td class="px-3 py-2.5 text-[10px] text-slate-500 whitespace-nowrap">${(item.lastUpdated || '').slice(0, 16)}</td>
             <td class="px-3 py-2.5 whitespace-nowrap space-x-1">
-              ${item.wa && item.wa.startsWith('https://wa.me') ? `<a href="${item.wa}" target="_blank" rel="noopener" class="px-2 py-1 bg-emerald-600 text-white rounded text-[10px] font-semibold">WA</a>` : ''}
+              ${waHref ? `<a href="${waHref}" target="_blank" rel="noopener" class="px-2 py-1 bg-emerald-600 text-white rounded text-[10px] font-semibold">WA</a>` : ''}
               <a href="${item.maps}" target="_blank" rel="noopener" class="px-2 py-1 bg-blue-600 text-white rounded text-[10px] font-semibold">Maps</a>
               <button type="button" data-detail="${item.id}" class="px-2 py-1 bg-slate-800 text-white rounded text-[10px] font-semibold">Edit</button>
             </td>
@@ -1256,6 +1357,7 @@ function doPost(e) {
           iconAnchor: [14, 28],
           popupAnchor: [0, -28]
         });
+        const waHref = getWaLink(item);
         const m = L.marker([item.lat, item.lon], { icon }).bindPopup(`
           <div style="min-width:210px;font-size:12px;line-height:1.4;">
             <div style="font-weight:700;font-size:13px;margin-bottom:2px;">${item.nama}</div>
@@ -1263,7 +1365,7 @@ function doPost(e) {
             <div style="color:#475569;margin-bottom:6px;">${item.alamat}</div>
             <div style="display:flex;gap:6px;">
               <a href="${item.maps}" target="_blank" rel="noopener" style="background:#2563eb;color:#fff;padding:4px 8px;border-radius:6px;text-decoration:none;font-weight:600;font-size:11px;">Google Maps</a>
-              ${item.wa && item.wa.startsWith('https://wa.me') ? `<a href="${item.wa}" target="_blank" rel="noopener" style="background:#16a34a;color:#fff;padding:4px 8px;border-radius:6px;text-decoration:none;font-weight:600;font-size:11px;">Chat WA</a>` : ''}
+              ${waHref ? `<a href="${waHref}" target="_blank" rel="noopener" style="background:#16a34a;color:#fff;padding:4px 8px;border-radius:6px;text-decoration:none;font-weight:600;font-size:11px;">Chat WA</a>` : ''}
             </div>
           </div>
         `);
@@ -1279,7 +1381,7 @@ function doPost(e) {
         compEl.innerHTML = '<div class="p-6 text-center text-xs text-slate-500 bg-slate-50 rounded-xl border border-dashed border-slate-300">Belum ada kosan dipilih untuk perbandingan. Klik <strong>"+ Banding"</strong> di tab Daftar Kosan (maksimal 4 kosan).</div>';
       } else {
         const rows = [
-          { label: 'Foto Survei', fn: i => (i.photos && i.photos.length > 0) ? `<img src="${i.photos[0].dataUrl}" class="w-24 h-16 object-cover rounded-lg border" />` : '<span class="text-slate-400">Belum ada foto</span>' },
+          { label: 'Foto Survei', fn: i => { const ps = getItemPhotos(i.id); return ps.length > 0 ? `<img src="${ps[0].dataUrl}" class="w-24 h-16 object-cover rounded-lg border" />` : '<span class="text-slate-400">Belum ada foto</span>'; } },
           { label: 'Kode & Tipe', fn: i => `${i.kode} • ${i.tipe}` },
           { label: 'Harga Min', fn: i => `<strong class="text-emerald-700">${formatRp(i.hargaMin)}</strong>` },
           { label: 'Jam Malam', fn: i => i.akses },
@@ -1348,8 +1450,9 @@ function doPost(e) {
     }
 
     function renderModalPhotos(item) {
-      const photos = item.photos || [];
+      const photos = getItemPhotos(item.id);
       document.getElementById('mdlPhotoCount').textContent = photos.length;
+      document.getElementById('mdlPhotoTabCount').textContent = photos.length;
       const grid = document.getElementById('mdlPhotoGrid');
       if (photos.length === 0) {
         grid.innerHTML = '<div class="col-span-full py-3 text-[11px] text-slate-500">Belum ada foto. Klik <strong>"+ Upload Foto"</strong> atau seret foto ke kotak ini.</div>';
@@ -1369,7 +1472,21 @@ function doPost(e) {
       `).join('');
     }
 
-    function openDetailModal(id) {
+    function switchModalSubTab(tabName) {
+      document.querySelectorAll('.mdl-pane').forEach(p => p.classList.add('hidden'));
+      document.getElementById('mdlPane-' + tabName).classList.remove('hidden');
+      document.querySelectorAll('.mdl-subtab').forEach(b => {
+        if (b.dataset.mdlTab === tabName) {
+          b.classList.add('mdl-tab-active');
+          b.classList.remove('mdl-tab-inactive');
+        } else {
+          b.classList.remove('mdl-tab-active');
+          b.classList.add('mdl-tab-inactive');
+        }
+      });
+    }
+
+    function openDetailModal(id, initialSubTab = 'status') {
       const item = kosanList.find(i => i.id === id);
       if (!item) return;
       activeDetailId = id;
@@ -1382,7 +1499,6 @@ function doPost(e) {
 
       renderModalPhotos(item);
 
-      // Populate editable fields
       document.getElementById('mdlEditNama').value = item.nama || '';
       document.getElementById('mdlEditTipe').value = item.tipe || '';
       document.getElementById('mdlEditHargaMin').value = item.hargaMin || 0;
@@ -1392,8 +1508,12 @@ function doPost(e) {
       document.getElementById('mdlEditAkses').value = item.akses || '';
       document.getElementById('mdlEditTransportasi').value = item.transportasi || '';
       document.getElementById('mdlEditAturan').value = item.aturan || '';
-      document.getElementById('mdlEditWa').value = (item.wa_display || '').replace('wa.me/+', '0').replace('Cek Lokasi / Belum ada WA', '');
+      let cleanWa = (item.wa_display || '').replace('wa.me/+62', '0').replace('wa.me/+', '0');
+      if (cleanWa.includes('Belum ada') || cleanWa.includes('Website') || cleanWa.includes('Survei')) cleanWa = '';
+      document.getElementById('mdlEditWa').value = cleanWa;
       document.getElementById('mdlEditMaps').value = item.maps || '';
+      document.getElementById('mdlEditLat').value = item.lat || -6.1880;
+      document.getElementById('mdlEditLon').value = item.lon || 106.8220;
 
       document.getElementById('mdlStatus').value = item.status || 'Belum Konfirmasi';
       document.getElementById('mdlJadwal').value = item.jadwal || '';
@@ -1404,14 +1524,16 @@ function doPost(e) {
       document.getElementById('mdlCatatan').value = item.catatan || item.keterangan || '';
 
       const waBtn = document.getElementById('mdlBtnWa');
-      if (item.wa && item.wa.startsWith('https://wa.me')) {
-        waBtn.href = item.wa;
+      const waHref = getWaLink(item);
+      if (waHref) {
+        waBtn.href = waHref;
         waBtn.classList.remove('hidden');
       } else {
         waBtn.classList.add('hidden');
       }
       document.getElementById('mdlBtnMaps').href = item.maps || '#';
       document.getElementById('mdlBtnDrive').href = item.driveUrl || '#';
+      switchModalSubTab(initialSubTab);
       document.getElementById('detailModal').classList.remove('hidden');
     }
 
@@ -1454,7 +1576,7 @@ function doPost(e) {
       items.forEach(i => {
         lines.push([
           i.id, i.kode_input, i.kode, i.kecamatan, i.nama, i.alamat, i.hargaMin, i.hargaMax, i.tipe, i.akses, i.fasilitas, i.transportasi,
-          getPipeline(i), i.status, i.kontak, i.survei, i.tempati, i.jadwal, i.skor, (i.photos || []).length, i.wa, i.maps, i.catatan || i.keterangan, i.lastUpdated
+          getPipeline(i), i.status, i.kontak, i.survei, i.tempati, i.jadwal, i.skor, getItemPhotos(i.id).length, i.wa, i.maps, i.catatan || i.keterangan, i.lastUpdated
         ].map(esc).join(','));
       });
       const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -1483,12 +1605,29 @@ function doPost(e) {
       return out;
     }
 
+    function captureGps(latInputId, lonInputId) {
+      if (!navigator.geolocation) {
+        showToast('Browser tidak mendukung GPS');
+        return;
+      }
+      showToast('Mengambil koordinat GPS...');
+      navigator.geolocation.getCurrentPosition(pos => {
+        document.getElementById(latInputId).value = pos.coords.latitude.toFixed(6);
+        document.getElementById(lonInputId).value = pos.coords.longitude.toFixed(6);
+        showToast('Koordinat GPS berhasil diambil!');
+      }, () => showToast('Gagal mengambil lokasi GPS. Pastikan izin lokasi aktif.'));
+    }
+
     function initEvents() {
       document.querySelectorAll('.nav-btn, .mob-nav-btn').forEach(btn => {
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
       });
 
-      ['filterSearch', 'filterKode', 'filterBudget', 'filterTipe', 'filterPipeline', 'filterInputVer', 'sortOrder', 'filterHasPhotos'].forEach(id => {
+      document.querySelectorAll('.mdl-subtab').forEach(btn => {
+        btn.addEventListener('click', () => switchModalSubTab(btn.dataset.mdlTab));
+      });
+
+      ['filterSearch', 'filterKode', 'filterBudget', 'filterTipe', 'filterPipeline', 'sortOrder', 'filterHasPhotos'].forEach(id => {
         const el = document.getElementById(id);
         el.addEventListener(id === 'filterSearch' ? 'input' : 'change', () => {
           renderList();
@@ -1502,7 +1641,6 @@ function doPost(e) {
         document.getElementById('filterBudget').value = 'all';
         document.getElementById('filterTipe').value = 'all';
         document.getElementById('filterPipeline').value = 'all';
-        document.getElementById('filterInputVer').value = 'all';
         document.getElementById('sortOrder').value = 'id_asc';
         document.getElementById('filterHasPhotos').checked = false;
         renderList();
@@ -1570,7 +1708,7 @@ function doPost(e) {
           }
           const detBtn = e.target.closest('[data-detail]');
           if (detBtn) {
-            openDetailModal(Number(detBtn.dataset.detail));
+            openDetailModal(Number(detBtn.dataset.detail), 'status');
             return;
           }
           const cmpBtn = e.target.closest('[data-compare]');
@@ -1597,17 +1735,18 @@ function doPost(e) {
         e.target.value = '';
       });
       const dropZone = document.getElementById('mdlPhotoDropZone');
-      dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('bg-teal-50'); });
-      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('bg-teal-50'));
+      dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('bg-teal-100/50'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('bg-teal-100/50'));
       dropZone.addEventListener('drop', e => {
         e.preventDefault();
-        dropZone.classList.remove('bg-teal-50');
+        dropZone.classList.remove('bg-teal-100/50');
         const lbl = document.getElementById('mdlPhotoLabel').value;
         handleFilesUpload(activeDetailId, e.dataTransfer.files, lbl);
       });
       document.getElementById('mdlPhotoGrid').addEventListener('click', e => {
         const item = kosanList.find(i => i.id === activeDetailId);
         if (!item) return;
+        const photos = getItemPhotos(item.id);
         const lbBtn = e.target.closest('[data-open-lb]');
         if (lbBtn) {
           openLightbox(Number(lbBtn.dataset.openLb), Number(lbBtn.dataset.lbIdx || 0));
@@ -1616,8 +1755,8 @@ function doPost(e) {
         const covBtn = e.target.closest('[data-cover-photo]');
         if (covBtn) {
           const idx = Number(covBtn.dataset.coverPhoto);
-          const [picked] = item.photos.splice(idx, 1);
-          item.photos.unshift(picked);
+          const [picked] = photos.splice(idx, 1);
+          photos.unshift(picked);
           saveState();
           renderModalPhotos(item);
           renderList();
@@ -1627,7 +1766,7 @@ function doPost(e) {
         const delBtn = e.target.closest('[data-del-photo]');
         if (delBtn) {
           const idx = Number(delBtn.dataset.delPhoto);
-          item.photos.splice(idx, 1);
+          photos.splice(idx, 1);
           saveState();
           renderModalPhotos(item);
           renderList();
@@ -1637,22 +1776,22 @@ function doPost(e) {
 
       document.getElementById('btnCloseLightbox').addEventListener('click', () => document.getElementById('photoLightbox').classList.add('hidden'));
       document.getElementById('lbPrev').addEventListener('click', () => {
-        const item = kosanList.find(i => i.id === lbItemId);
-        if (!item || !item.photos.length) return;
-        lbIndex = (lbIndex - 1 + item.photos.length) % item.photos.length;
+        const photos = getItemPhotos(lbItemId);
+        if (!photos.length) return;
+        lbIndex = (lbIndex - 1 + photos.length) % photos.length;
         updateLightboxView();
       });
       document.getElementById('lbNext').addEventListener('click', () => {
-        const item = kosanList.find(i => i.id === lbItemId);
-        if (!item || !item.photos.length) return;
-        lbIndex = (lbIndex + 1) % item.photos.length;
+        const photos = getItemPhotos(lbItemId);
+        if (!photos.length) return;
+        lbIndex = (lbIndex + 1) % photos.length;
         updateLightboxView();
       });
 
-      // Detail modal save with full diff tracking
-      document.getElementById('btnCloseDetailModal').addEventListener('click', () => {
-        document.getElementById('detailModal').classList.add('hidden');
-      });
+      document.getElementById('btnMdlGps').addEventListener('click', () => captureGps('mdlEditLat', 'mdlEditLon'));
+      document.getElementById('btnAddGps').addEventListener('click', () => captureGps('addLat', 'addLon'));
+
+      document.getElementById('btnCloseDetailModal').addEventListener('click', () => document.getElementById('detailModal').classList.add('hidden'));
       document.getElementById('btnSaveDetailModal').addEventListener('click', () => {
         const item = kosanList.find(i => i.id === activeDetailId);
         if (!item) return;
@@ -1669,6 +1808,8 @@ function doPost(e) {
         const newAturan = document.getElementById('mdlEditAturan').value.trim();
         let rawPhone = document.getElementById('mdlEditWa').value.replace(/[^0-9]/g, '');
         const newMaps = document.getElementById('mdlEditMaps').value.trim();
+        const newLat = Number(document.getElementById('mdlEditLat').value);
+        const newLon = Number(document.getElementById('mdlEditLon').value);
         const newStatus = document.getElementById('mdlStatus').value;
         const newJadwal = document.getElementById('mdlJadwal').value;
         const newSkor = Number(document.getElementById('mdlSkor').value);
@@ -1699,10 +1840,16 @@ function doPost(e) {
         item.aturan = newAturan || '-';
         if (rawPhone) {
           if (rawPhone.startsWith('0')) rawPhone = '62' + rawPhone.slice(1);
+          else if (!rawPhone.startsWith('62')) rawPhone = '62' + rawPhone;
           item.wa = 'https://wa.me/' + rawPhone;
           item.wa_display = 'wa.me/+' + rawPhone;
+        } else {
+          item.wa = '';
+          item.wa_display = 'Belum ada WA';
         }
         if (newMaps) item.maps = newMaps;
+        if (!isNaN(newLat) && newLat !== 0) item.lat = newLat;
+        if (!isNaN(newLon) && newLon !== 0) item.lon = newLon;
         item.status = newStatus;
         item.jadwal = newJadwal;
         item.skor = newSkor;
@@ -1721,7 +1868,6 @@ function doPost(e) {
         showToast('Detail & Log Perubahan tersimpan!');
       });
 
-      // Add modal events
       document.getElementById('btnOpenAddModal').addEventListener('click', () => document.getElementById('addModal').classList.remove('hidden'));
       ['btnCloseAddModal', 'btnCancelAdd'].forEach(id => {
         document.getElementById(id).addEventListener('click', () => document.getElementById('addModal').classList.add('hidden'));
@@ -1733,6 +1879,8 @@ function doPost(e) {
         const alamat = document.getElementById('addAlamat').value.trim();
         const pmin = Number(document.getElementById('addHargaMin').value) || 1000000;
         const pmax = Number(document.getElementById('addHargaMax').value) || pmin;
+        const lat = Number(document.getElementById('addLat').value) || -6.1880;
+        const lon = Number(document.getElementById('addLon').value) || 106.8220;
         let phone = document.getElementById('addPhone').value.replace(/[^0-9]/g, '');
         if (phone.startsWith('0')) phone = '62' + phone.slice(1);
         const waUrl = phone ? 'https://wa.me/' + phone : '';
@@ -1742,7 +1890,7 @@ function doPost(e) {
           id: newId,
           kode_input: 'Custom',
           kode: kode,
-          kecamatan: kode,
+          kecamatan: AREA_LABELS[kode] || kode,
           nama: nama,
           alamat: alamat,
           hargaText: formatRp(pmin) + ' - ' + formatRp(pmax),
@@ -1754,11 +1902,11 @@ function doPost(e) {
           transportasi: 'Cek Google Maps',
           wa: waUrl,
           wa_display: phone ? 'wa.me/+' + phone : '-',
-          maps: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(nama + ' ' + alamat),
+          maps: `https://maps.google.com/?q=${lat},${lon}`,
           aturan: '-',
           keterangan: 'Ditambahkan manual via aplikasi',
-          lat: -6.1880,
-          lon: 106.8220,
+          lat: lat,
+          lon: lon,
           driveUrl: DRIVE_MAP[kode] || 'https://drive.google.com/drive/folders/1LB-L7IwzhkllDAggkcT3-Xyz9av-FYR0',
           kontak: false,
           survei: false,
@@ -1769,7 +1917,6 @@ function doPost(e) {
           catatan: '',
           shortlisted: false,
           checklist: new Array(15).fill(false),
-          photos: [],
           lastUpdated: nowStr()
         };
         kosanList.unshift(newItem);
@@ -1805,7 +1952,6 @@ function doPost(e) {
         }
       });
 
-      // Sync & Apps Script modal
       document.getElementById('btnOpenScriptModal').addEventListener('click', () => document.getElementById('appsScriptModal').classList.remove('hidden'));
       document.getElementById('btnCloseScriptModal').addEventListener('click', () => document.getElementById('appsScriptModal').classList.add('hidden'));
       document.getElementById('btnCopyScript').addEventListener('click', () => {
@@ -1847,19 +1993,28 @@ function doPost(e) {
           if (headerIdx === -1) headerIdx = 0;
           const hdrs = parseCsvLine(lines[headerIdx]);
           const idxNama = hdrs.findIndex(h => h.trim() === 'Nama Kos');
+          const idxKode = hdrs.findIndex(h => h.includes('Kode Lokasi'));
+          const idxAlamat = hdrs.findIndex(h => h.includes('Alamat'));
           const idxFas = hdrs.findIndex(h => h.includes('Fasilitas'));
           const idxMin = hdrs.findIndex(h => h.includes('Harga Min'));
           const idxMax = hdrs.findIndex(h => h.includes('Harga Max'));
+          const idxStatus = hdrs.findIndex(h => h.includes('Status Ketersediaan'));
+          const idxKontak = hdrs.findIndex(h => h.includes('Ceklis Kontak'));
+          const idxSurvei = hdrs.findIndex(h => h.includes('Ceklis Survei'));
+          const idxTempati = hdrs.findIndex(h => h.includes('Ceklis Tempati'));
+          const idxCat = hdrs.findIndex(h => h.includes('Keterangan'));
           const idxUpd = hdrs.findIndex(h => h.includes('Terakhir Diubah'));
           if (idxNama === -1) throw new Error('Kolom Nama Kos tidak ditemukan');
 
           let updatedCount = 0;
+          let addedCount = 0;
           for (let r = headerIdx + 1; r < lines.length; r++) {
             const cells = parseCsvLine(lines[r]);
             const nama = (cells[idxNama] || '').trim();
             if (!nama) continue;
             const match = kosanList.find(k => k.nama.trim().toLowerCase() === nama.toLowerCase());
             if (match) {
+              if (idxAlamat !== -1 && cells[idxAlamat]) match.alamat = cells[idxAlamat];
               if (idxFas !== -1 && cells[idxFas]) match.fasilitas = cells[idxFas];
               if (idxMin !== -1 && cells[idxMin]) {
                 const v = Number(String(cells[idxMin]).replace(/[^0-9]/g, ''));
@@ -1869,16 +2024,44 @@ function doPost(e) {
                 const v = Number(String(cells[idxMax]).replace(/[^0-9]/g, ''));
                 if (v > 1000) match.hargaMax = v;
               }
+              if (idxStatus !== -1 && cells[idxStatus]) match.status = cells[idxStatus];
+              if (idxKontak !== -1 && cells[idxKontak]) match.kontak = cells[idxKontak].toUpperCase() === 'TRUE';
+              if (idxSurvei !== -1 && cells[idxSurvei]) match.survei = cells[idxSurvei].toUpperCase() === 'TRUE';
+              if (idxTempati !== -1 && cells[idxTempati]) match.tempati = cells[idxTempati].toUpperCase() === 'TRUE';
+              if (idxCat !== -1 && cells[idxCat]) match.catatan = cells[idxCat];
               if (idxUpd !== -1 && cells[idxUpd]) match.lastUpdated = cells[idxUpd];
               updatedCount++;
+            } else {
+              const kode = idxKode !== -1 && cells[idxKode] ? cells[idxKode] : 'JP-TNA';
+              const pmin = idxMin !== -1 ? (Number(String(cells[idxMin]).replace(/[^0-9]/g, '')) || 1000000) : 1000000;
+              const pmax = idxMax !== -1 ? (Number(String(cells[idxMax]).replace(/[^0-9]/g, '')) || pmin) : pmin;
+              const newId = Math.max(0, ...kosanList.map(i => i.id)) + 1;
+              kosanList.push({
+                id: newId, kode_input: 'Sheets', kode, kecamatan: AREA_LABELS[kode] || kode, nama,
+                alamat: idxAlamat !== -1 ? cells[idxAlamat] : '-',
+                hargaText: formatRp(pmin), hargaMin: pmin, hargaMax: pmax, tipe: 'Campur', akses: 'Bebas 24 Jam',
+                fasilitas: idxFas !== -1 ? cells[idxFas] : '-', transportasi: '-', wa: '', wa_display: '-',
+                maps: 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(nama),
+                aturan: '-', keterangan: idxCat !== -1 ? cells[idxCat] : '', lat: -6.1880, lon: 106.8220,
+                driveUrl: DRIVE_MAP[kode] || 'https://drive.google.com/drive/folders/1LB-L7IwzhkllDAggkcT3-Xyz9av-FYR0',
+                kontak: idxKontak !== -1 && cells[idxKontak].toUpperCase() === 'TRUE',
+                survei: idxSurvei !== -1 && cells[idxSurvei].toUpperCase() === 'TRUE',
+                tempati: idxTempati !== -1 && cells[idxTempati].toUpperCase() === 'TRUE',
+                status: idxStatus !== -1 && cells[idxStatus] ? cells[idxStatus] : 'Belum Konfirmasi',
+                jadwal: '', skor: 0, catatan: idxCat !== -1 ? cells[idxCat] : '',
+                shortlisted: false, checklist: new Array(15).fill(false),
+                lastUpdated: idxUpd !== -1 && cells[idxUpd] ? cells[idxUpd] : nowStr()
+              });
+              addedCount++;
             }
           }
-          changeLogs.unshift({ time: nowStr(), kode: 'ALL', nama: `${updatedCount} Kosan`, source: 'Google Sheets', fields: 'Sinkronisasi Tarik CSV', summary: `Memperbarui ${updatedCount} baris dari Google Sheets` });
+          changeLogs.unshift({ time: nowStr(), kode: 'ALL', nama: `${updatedCount + addedCount} Kosan`, source: 'Google Sheets', fields: 'Sinkronisasi Tarik CSV', summary: `Update ${updatedCount} baris & tambah ${addedCount} baris baru dari Sheets` });
           saveState();
+          populateKodeFilter();
           renderList();
           renderDashboard();
           renderSyncAndLogs();
-          showToast(`Sinkronisasi selesai: ${updatedCount} kosan diperbarui!`);
+          showToast(`Sinkronisasi selesai: ${updatedCount} diperbarui, ${addedCount} baru!`);
         } catch (err) {
           showToast('Gagal menarik CSV. Pastikan spreadsheet sudah di-Publish to web sebagai CSV.');
         }
@@ -1902,14 +2085,14 @@ function doPost(e) {
       });
 
       document.getElementById('btnExportJson').addEventListener('click', () => {
-        const blob = new Blob([JSON.stringify({ kosanList, changeLogs }, null, 2)], { type: 'application/json' });
+        const blob = new Blob([JSON.stringify({ kosanList, changeLogs, photosMap }, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'Backup_Kosan_Tracker_Pro.json';
         a.click();
         URL.revokeObjectURL(url);
-        showToast('Backup JSON berhasil diunduh!');
+        showToast('Backup JSON + Foto berhasil diunduh!');
       });
       document.getElementById('inputImportJson').addEventListener('change', e => {
         const file = e.target.files[0];
@@ -1923,13 +2106,14 @@ function doPost(e) {
             } else if (imported && Array.isArray(imported.kosanList)) {
               kosanList = imported.kosanList;
               if (Array.isArray(imported.changeLogs)) changeLogs = imported.changeLogs;
+              if (imported.photosMap && typeof imported.photosMap === 'object') photosMap = imported.photosMap;
             } else throw new Error('Invalid');
             saveState();
             populateKodeFilter();
             renderDashboard();
             renderList();
             renderSyncAndLogs();
-            showToast('Backup JSON berhasil dimuat!');
+            showToast('Backup JSON & Foto berhasil dimuat!');
           } catch (err) {
             showToast('File JSON tidak valid');
           }
@@ -1940,7 +2124,8 @@ function doPost(e) {
       document.getElementById('btnRequestReset').addEventListener('click', () => document.getElementById('resetModal').classList.remove('hidden'));
       document.getElementById('btnCancelReset').addEventListener('click', () => document.getElementById('resetModal').classList.add('hidden'));
       document.getElementById('btnConfirmReset').addEventListener('click', () => {
-        kosanList = JSON.parse(JSON.stringify(INITIAL_DATA));
+        kosanList = JSON.parse(JSON.stringify(INITIAL_DATA)).map(p => ({ ...p, photos: undefined }));
+        photosMap = {};
         changeLogs = [{ time: nowStr(), kode: 'ALL', nama: '122 Kosan Master', source: 'Sistem', fields: 'Reset Data', summary: 'Data dikembalikan ke bawaan' }];
         saveState();
         populateKodeFilter();
@@ -1952,10 +2137,12 @@ function doPost(e) {
       });
     }
 
-    loadState();
-    populateKodeFilter();
-    initEvents();
-    switchTab('list');
+    (async () => {
+      await loadState();
+      populateKodeFilter();
+      initEvents();
+      switchTab('list');
+    })();
   </script>
 </body>
 </html>
