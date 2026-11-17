@@ -221,6 +221,16 @@
           <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-rose-600 inline-block"></span> Penuh</span>
         </div>
       </div>
+      <div id="mapOffsetBar" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-3.5 shadow-sm flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div>
+          <span class="font-bold text-amber-900">📐 Kalibrasi Selisih Pin:</span>
+          <span id="mapOffsetInfo" class="text-amber-800 ml-1"></span>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" id="btnApplyPinOffset" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-sm transition">Terapkan Selisih ke Kosan Lain (Filter Aktif)</button>
+          <button type="button" id="btnResetAllPins" class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold rounded-xl transition">Reset Koordinat Awal</button>
+        </div>
+      </div>
       <div class="bg-white rounded-2xl border border-slate-200 p-2 shadow-sm">
         <div id="surveyMap" class="w-full rounded-xl" style="height: 520px;"></div>
       </div>
@@ -798,6 +808,7 @@ function doPost(e) {
     let leafletMap = null;
     let leafletMarkersLayer = null;
     let isDragPinMode = false;
+    let lastPinOffset = null;
 
     function nowStr() {
       const d = new Date();
@@ -1381,8 +1392,19 @@ function doPost(e) {
         if (isDragPinMode) {
           m.on('dragend', ev => {
             const pos = ev.target.getLatLng();
+            const initRef = INITIAL_DATA.find(x => x.id === item.id);
+            const baseLat = initRef ? initRef.lat : item.lat;
+            const baseLon = initRef ? initRef.lon : item.lon;
             item.lat = Number(pos.lat.toFixed(6));
             item.lon = Number(pos.lng.toFixed(6));
+            lastPinOffset = {
+              refId: item.id,
+              name: item.nama,
+              dLat: Number((item.lat - baseLat).toFixed(6)),
+              dLon: Number((item.lon - baseLon).toFixed(6))
+            };
+            document.getElementById('mapOffsetBar').classList.remove('hidden');
+            document.getElementById('mapOffsetInfo').textContent = `Dari "${item.nama}" (ΔLat: ${lastPinOffset.dLat}, ΔLon: ${lastPinOffset.dLon})`;
             recordChange(item, 'Aplikasi Web', 'Koordinat Peta', `Pin digeser ke ${item.lat}, ${item.lon}`);
             saveState();
             showToast(`Titik pin ${item.nama} diperbarui!`);
@@ -1805,6 +1827,44 @@ function doPost(e) {
         if (!photos.length) return;
         lbIndex = (lbIndex + 1) % photos.length;
         updateLightboxView();
+      });
+
+      document.getElementById('btnApplyPinOffset').addEventListener('click', () => {
+        if (!lastPinOffset) {
+          showToast('Geser 1 pin patokan terlebih dahulu');
+          return;
+        }
+        const targets = getFilteredList();
+        let count = 0;
+        targets.forEach(t => {
+          if (t.id === lastPinOffset.refId) return;
+          const initRef = INITIAL_DATA.find(x => x.id === t.id);
+          const baseLat = initRef ? initRef.lat : t.lat;
+          const baseLon = initRef ? initRef.lon : t.lon;
+          t.lat = Number((baseLat + lastPinOffset.dLat).toFixed(6));
+          t.lon = Number((baseLon + lastPinOffset.dLon).toFixed(6));
+          count++;
+        });
+        changeLogs.unshift({ time: nowStr(), kode: 'MAP', nama: `${count} Kosan`, source: 'Aplikasi Web', fields: 'Kalibrasi Pin Peta', summary: `Menggeser ${count} pin sebesar ΔLat ${lastPinOffset.dLat}, ΔLon ${lastPinOffset.dLon} (Link Maps tetap)` });
+        saveState();
+        renderMap();
+        showToast(`${count} pin kosan digeser mengikuti patokan (Link Maps tetap aman)!`);
+      });
+
+      document.getElementById('btnResetAllPins').addEventListener('click', () => {
+        const targets = getFilteredList();
+        targets.forEach(t => {
+          const initRef = INITIAL_DATA.find(x => x.id === t.id);
+          if (initRef) {
+            t.lat = initRef.lat;
+            t.lon = initRef.lon;
+          }
+        });
+        lastPinOffset = null;
+        document.getElementById('mapOffsetBar').classList.add('hidden');
+        saveState();
+        renderMap();
+        showToast('Koordinat pin dikembalikan ke posisi awal');
       });
 
       document.getElementById('btnToggleDragPins').addEventListener('click', () => {
