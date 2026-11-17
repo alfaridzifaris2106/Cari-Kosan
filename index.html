@@ -1383,7 +1383,6 @@ function doPost(e) {
             const pos = ev.target.getLatLng();
             item.lat = Number(pos.lat.toFixed(6));
             item.lon = Number(pos.lng.toFixed(6));
-            item.maps = `https://maps.google.com/?q=${item.lat},${item.lon}`;
             recordChange(item, 'Aplikasi Web', 'Koordinat Peta', `Pin digeser ke ${item.lat}, ${item.lon}`);
             saveState();
             showToast(`Titik pin ${item.nama} diperbarui!`);
